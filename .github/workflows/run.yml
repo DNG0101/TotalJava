@@ -17,6 +17,9 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
+        - name: Write input
+  run: |
+    echo "${{ github.event.client_payload.input }}" > input.txt
 
       - name: Compile
         run: javac *.java
