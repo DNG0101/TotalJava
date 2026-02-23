@@ -11,31 +11,35 @@ jobs:
 
     steps:
 
-      # 1. Download your repository files
+      # 1️⃣ Download repository files
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Install Java automatically
+      # 2️⃣ Install Java 17
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
 
-      # 3. Create input.txt from form input
+      # 3️⃣ Create input.txt (default if manual run)
       - name: Create input file
         run: |
-          echo "${{ github.event.client_payload.input }}" > input.txt
+          if [ -z "${{ github.event.client_payload.input }}" ]; then
+            echo "5 3" > input.txt
+          else
+            echo "${{ github.event.client_payload.input }}" > input.txt
+          fi
 
-      # 4. Compile ALL java files (multiple classes supported)
+      # 4️⃣ Compile ALL Java files
       - name: Compile Java
         run: javac *.java
 
-      # 5. Run your program
+      # 5️⃣ Run the program
       - name: Run Java Program
         run: java Main > output.txt
 
-      # 6. Convert output to a webpage
+      # 6️⃣ Convert output to webpage
       - name: Create output webpage
         run: |
           echo "<html>" > index.html
@@ -44,14 +48,14 @@ jobs:
           cat output.txt >> index.html
           echo "</pre></body></html>" >> index.html
 
-      # 7. Prepare website files (VERY IMPORTANT STEP)
+      # 7️⃣ Prepare site files
       - name: Prepare site files
         run: |
           mkdir public
           cp index.html public/
           cp form.html public/
 
-      # 8. Publish to GitHub Pages
+      # 8️⃣ Deploy to GitHub Pages
       - name: Deploy Website
         uses: peaceiris/actions-gh-pages@v4
         with:
