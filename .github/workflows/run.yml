@@ -25,11 +25,11 @@ jobs:
       # 3️⃣ Create input.txt (default if manual run)
       - name: Create input file
         run: |
-          if [ -z "${{ github.event.client_payload.input }}" ]; then
-            echo "5 3" > input.txt
-          else
-            echo "${{ github.event.client_payload.input }}" > input.txt
-          fi
+            INPUT="${{ github.event.client_payload.input }}"
+            if [ -z "$INPUT" ]; then
+            INPUT="5 3"
+            fi
+            echo "$INPUT" > input.txt
 
       # 4️⃣ Compile ALL Java files
       - name: Compile Java
