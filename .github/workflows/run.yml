@@ -1,9 +1,9 @@
 name: Run Java Program
 
 on:
-  push:
-    paths:
-      - 'input.txt'
+  workflow_dispatch:
+  repository_dispatch:
+    types: [run-java]
 
 jobs:
   run-java:
