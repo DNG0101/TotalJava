@@ -17,7 +17,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-        - name: Write input
+      - name: Write input
   run: |
     echo "${{ github.event.client_payload.input }}" > input.txt
 
@@ -33,9 +33,11 @@ jobs:
           echo "<h2>Java Program Output</h2><pre>" >> index.html
           cat output.txt >> index.html
           echo "</pre></body></html>" >> index.html
+       - name: Copy form page
+   run: cp form.html form.html
 
       - name: Publish Website
-        uses: peaceiris/actions-gh-pages@v4
+    uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: .
