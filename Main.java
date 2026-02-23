@@ -5,13 +5,15 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
+        // default values (VERY IMPORTANT)
         int a = 5;
         int b = 3;
 
         File file = new File("input.txt");
 
-        // Only read if numbers exist
+        // Read only if numbers exist
         if (file.exists()) {
+
             Scanner sc = new Scanner(file);
 
             if (sc.hasNextInt()) {
