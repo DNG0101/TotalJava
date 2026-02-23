@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>TotalJava Runner</title>
+<style>
+body{
+background:#111;
+color:#0f0;
+font-family:monospace;
+text-align:center;
+padding-top:40px;
+}
+input{
+padding:8px;
+margin:10px;
+}
+button{
+padding:10px 20px;
+font-size:16px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Java Cloud Calculator</h2>
+
+<input id="a" placeholder="First number"><br>
+<input id="b" placeholder="Second number"><br>
+
+<button onclick="runJava()">Run Program</button>
+
+<p id="msg"></p>
+
+<script>
+async function runJava(){
+
+let a=document.getElementById("a").value;
+let b=document.getElementById("b").value;
+
+await fetch("https://api.github.com/repos/DNG0101/TotalJava/dispatches",{
+method:"POST",
+headers:{
+"Accept":"application/vnd.github+json",
+"Authorization":"token YOUR_TOKEN"
+},
+body:JSON.stringify({
+event_type:"run-java",
+client_payload:{
+input:a+" "+b
+}
+})
+});
+
+document.getElementById("msg").innerText=
+"Program running... refresh result page after 20 seconds.";
+}
+</script>
+</body>
+</html>
