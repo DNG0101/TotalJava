@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>TotalJava Input</title>
+</head>
+<body style="text-align:center;font-family:Arial;margin-top:50px">
+
+<h2>Enter Numbers</h2>
+
+<input id="a" placeholder="First number"><br><br>
+<input id="b" placeholder="Second number"><br><br>
+
+<button onclick="send()">Run Java Program</button>
+
+<p id="msg"></p>
+
+<script>
+async function send(){
+let a=document.getElementById("a").value;
+let b=document.getElementById("b").value;
+
+let content=btoa(a+" "+b);
+
+await fetch("https://api.github.com/repos/YOUR_USERNAME/TotalJava/contents/input.txt",{
+method:"PUT",
+headers:{
+"Authorization":"token YOUR_GITHUB_TOKEN",
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+message:"update input",
+content:content
+})
+});
+
+document.getElementById("msg").innerText=
+"Program running... open main page after 20 seconds.";
+}
+</script>
+
+</body>
+</html>
