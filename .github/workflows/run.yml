@@ -10,34 +10,50 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
 
+      # 1. Download your repository files
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Install Java automatically
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: Write input
-  run: |
-    echo "${{ github.event.client_payload.input }}" > input.txt
 
-      - name: Compile
+      # 3. Create input.txt from form input
+      - name: Create input file
+        run: |
+          echo "${{ github.event.client_payload.input }}" > input.txt
+
+      # 4. Compile ALL java files (multiple classes supported)
+      - name: Compile Java
         run: javac *.java
 
-      - name: Run Program
+      # 5. Run your program
+      - name: Run Java Program
         run: java Main > output.txt
 
-      - name: Convert output to webpage
+      # 6. Convert output to a webpage
+      - name: Create output webpage
         run: |
-          echo "<html><body style='background:black;color:lime;font-family:monospace'>" > index.html
+          echo "<html>" > index.html
+          echo "<body style='background:black;color:lime;font-family:monospace'>" >> index.html
           echo "<h2>Java Program Output</h2><pre>" >> index.html
           cat output.txt >> index.html
           echo "</pre></body></html>" >> index.html
-       - name: Copy form page
-   run: cp form.html form.html
 
-      - name: Publish Website
-    uses: peaceiris/actions-gh-pages@v4
+      # 7. Prepare website files (VERY IMPORTANT STEP)
+      - name: Prepare site files
+        run: |
+          mkdir public
+          cp index.html public/
+          cp form.html public/
+
+      # 8. Publish to GitHub Pages
+      - name: Deploy Website
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
+          publish_dir: ./public
