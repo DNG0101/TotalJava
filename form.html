@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>TotalJava Input</title>
+
+<style>
+body{
+    background:#111;
+    color:#0f0;
+    font-family:monospace;
+    text-align:center;
+    padding-top:60px;
+}
+input{
+    padding:10px;
+    margin:10px;
+    font-size:16px;
+}
+button{
+    padding:12px 20px;
+    font-size:16px;
+    cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<h2>Java Online Calculator</h2>
+
+<input id="a" placeholder="Enter first number"><br>
+<input id="b" placeholder="Enter second number"><br>
+
+<button onclick="runJava()">Run Program</button>
+
+<p id="msg"></p>
+
+<script>
+async function runJava(){
+
+let a=document.getElementById("a").value;
+let b=document.getElementById("b").value;
+
+await fetch("https://api.github.com/repos/DNG0101/TotalJava/dispatches",{
+method:"POST",
+headers:{
+"Accept":"application/vnd.github+json"
+},
+body:JSON.stringify({
+event_type:"run-java",
+client_payload:{
+input:a+" "+b
+}
+})
+});
+
+document.getElementById("msg").innerText=
+"Program running... wait 20 seconds then open result page.";
+}
+</script>
+
+</body>
+</html>

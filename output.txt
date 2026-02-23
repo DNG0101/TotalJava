@@ -1,8 +1,0 @@
-======= JAVA CLOUD PROGRAM =======
-First number  : 5
-Second number : 3
-----------------------------------
-Addition       : 8
-Subtraction    : 2
-Multiplication : 15
-Division       : 1
