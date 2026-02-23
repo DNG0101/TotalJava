@@ -1,31 +1,19 @@
-import java.io.File;
-import java.util.Scanner;
+public class Calculator {
 
-public class Main {
+    public static int add(int a, int b) {
+        return a + b;
+    }
 
-    public static void main(String[] args) throws Exception {
+    public static int sub(int a, int b) {
+        return a - b;
+    }
 
-        File file = new File("input.txt");
+    public static int mul(int a, int b) {
+        return a * b;
+    }
 
-        int a = 0;
-        int b = 0;
-
-        // Read numbers sent from website
-        if (file.exists()) {
-            Scanner sc = new Scanner(file);
-            if (sc.hasNextInt()) a = sc.nextInt();
-            if (sc.hasNextInt()) b = sc.nextInt();
-            sc.close();
-        }
-
-        System.out.println("======= JAVA CLOUD PROGRAM =======");
-        System.out.println("First number  : " + a);
-        System.out.println("Second number : " + b);
-        System.out.println("----------------------------------");
-
-        System.out.println("Addition       : " + Calculator.add(a, b));
-        System.out.println("Subtraction    : " + Calculator.sub(a, b));
-        System.out.println("Multiplication : " + Calculator.mul(a, b));
-        System.out.println("Division       : " + Calculator.div(a, b));
+    public static int div(int a, int b) {
+        if (b == 0) return 0;
+        return a / b;
     }
 }
