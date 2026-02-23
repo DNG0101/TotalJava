@@ -2,61 +2,62 @@ name: Run Java Program
 
 on:
   workflow_dispatch:
-  repository_dispatch:
-    types: [run-java]
+  issues:
+    types: [opened]
 
 jobs:
   run-java:
     runs-on: ubuntu-latest
 
     steps:
-
-      # 1️⃣ Download repository files
+      # 1. Download repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2️⃣ Install Java 17
+      # 2. Install Java
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
+          distribution: temurin
           java-version: '17'
 
-      # 3️⃣ Create input.txt (default if manual run)
-      - name: Create input file
+      # 3. Read numbers from issue (if triggered from form)
+      - name: Read input from issue
+        if: github.event.issue.body != ''
         run: |
-            INPUT="${{ github.event.client_payload.input }}"
-            if [ -z "$INPUT" ]; then
-            INPUT="5 3"
-            fi
-            echo "$INPUT" > input.txt
+          echo "${{ github.event.issue.body }}" > input.txt
 
-      # 4️⃣ Compile ALL Java files
+      # 4. Default input if manual run
+      - name: Default input
+        if: github.event.issue.body == ''
+        run: |
+          echo "5 3" > input.txt
+
+      # 5. Compile
       - name: Compile Java
         run: javac *.java
 
-      # 5️⃣ Run the program
-      - name: Run Java Program
+      # 6. Run program
+      - name: Run Java
         run: java Main > output.txt
 
-      # 6️⃣ Convert output to webpage
+      # 7. Create webpage
       - name: Create output webpage
         run: |
-          echo "<html>" > index.html
-          echo "<body style='background:black;color:lime;font-family:monospace'>" >> index.html
+          echo "<html><body style='background:black;color:lime;font-family:monospace'>" > index.html
           echo "<h2>Java Program Output</h2><pre>" >> index.html
           cat output.txt >> index.html
           echo "</pre></body></html>" >> index.html
 
-      # 7️⃣ Prepare site files
+      # 8. Prepare site
       - name: Prepare site files
         run: |
           mkdir public
           cp index.html public/
           cp form.html public/
 
-      # 8️⃣ Deploy to GitHub Pages
-      - name: Deploy Website
+      # 9. Deploy
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
